@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,17 +13,19 @@ public class MultithreadedTCPServer implements Runnable {
 
 	private ServerSocket socket;
 	private ExecutorService threadPool;
-	private Hashtable<String, Socket> users = new Hashtable<String, Socket>();
+	private ArrayList<User> users = new ArrayList<User>();
+	private ArrayList<ArrayList<String>> userOptions = new ArrayList<ArrayList<String>>();
+	private ArrayList<Boolean> usersAreReady = new ArrayList<Boolean>();
 	private PokemonDraft draft;
 	private String pokemonFile;
 	private int portNum;
-	private int numberOfPlayers;
+	private int numberOfUsers;
 	
-	public MultithreadedTCPServer(int portNum, int numberOfPlayers, String pokemonFile) throws IOException {
+	public MultithreadedTCPServer(int portNum, int numberOfUsers, String pokemonFile) throws IOException {
 		socket = new ServerSocket(portNum);
-		threadPool = Executors.newFixedThreadPool(numberOfPlayers);
+		threadPool = Executors.newFixedThreadPool(numberOfUsers);
 		this.portNum = portNum;
-		this.numberOfPlayers = numberOfPlayers;
+		this.numberOfUsers = numberOfUsers;
 		this.pokemonFile = pokemonFile;
 	}
 	
@@ -40,29 +41,62 @@ public class MultithreadedTCPServer implements Runnable {
 		}
 		System.out.println("PokemonDraft database created");
 		
-		for (int i = 0; i < numberOfPlayers; i++) {
+		for (int i = 0; i < numberOfUsers; i++) {
 			try {
 				Socket client = socket.accept();
-				threadPool.execute(new ClientHandler(client));
+				ArrayList<String> pokemonChoices = new ArrayList<String>();
+				for (int j = 0; j < 6; j++) {
+					pokemonChoices.add(draft.getPokemon());
+				}
+				userOptions.add(pokemonChoices);
+				usersAreReady.add(false);
+				threadPool.execute(new ClientHandler(client, i));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(1);
 			} 
 		}
 		
-		System.out.println("Everyone is here.");
+		int numberOfReadyUsers = 0;		
+		while (numberOfReadyUsers != numberOfUsers) {
+			numberOfReadyUsers = 0;
+			for (Boolean ready : usersAreReady) {
+				if (ready == true) {
+					numberOfReadyUsers ++;
+				}
+			}
+		}
+		
+		System.out.println("All players have made their draft picks");
+		
+		ArrayList<String> tempOptions = new ArrayList<String>();
+		tempOptions.addAll(userOptions.get(0));
+		for (int i = 0; i < numberOfUsers - 1; i++) {
+			userOptions.set(i, userOptions.get(i + 1));
+		}
+		userOptions.set(numberOfUsers - 1, tempOptions);
+		for (int i = 0; i < numberOfUsers; i++) {
+			OutputStream output;
+			try {
+				output = users.get(i).getSocket().getOutputStream();
+				output.write(userOptions.get(i).toString().getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	class ClientHandler implements Runnable {
 
-		private Socket client;		
+		private Socket client;
+		private int userId;
 		private Scanner input;
 		private OutputStream output;
-		private ArrayList<String> pokemonOptions = new ArrayList<String>();
-		private ArrayList<String> pokemonChoices = new ArrayList<String>();
+		private ArrayList<String> draftedPokemon = new ArrayList<String>();
 		
-		public ClientHandler(Socket client) {
+		public ClientHandler(Socket client, int userId) {
 			this.client = client;
+			this.userId = userId;
 		}
 		
 		public void run() {
@@ -71,29 +105,30 @@ public class MultithreadedTCPServer implements Runnable {
 				output = client.getOutputStream();
 				
 				output.write("Who are you? ".getBytes());
-				String user = input.next();
-				users.put(user, client);
-				System.out.println(user + " joined the server.");
+				String username = input.nextLine();
+				User user = new User(username, client);
+				users.add(user);
+				System.out.println(username + " joined the server.");
 				
-				for (int i = 0; i < 6; i++) {
-					String pokemon = draft.getPokemon();
-					pokemonOptions.add(pokemon);
-					output.write(pokemon.getBytes());
-					output.write("\n".getBytes());
+				ArrayList<String> pokemonOptions = userOptions.get(userId);
+				for (String pokemonOption : pokemonOptions) {
+					output.write((pokemonOption + "\n").getBytes());
 				}
 				
 				boolean choiceMade = false;
-				while (choiceMade) {
+				String choice = "";
+				while (!choiceMade) {
 					output.write("Please choose one of the Pokemon.\n".getBytes());
-					String choice = input.nextLine();
-					
+					choice = input.nextLine();				
 					choiceMade = pokemonOptions.remove(choice);
 				}
+				draftedPokemon.add(choice);
+				userOptions.set(userId, pokemonOptions);
+				usersAreReady.set(userId, true);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-		}		
+		}
 	}
 }
