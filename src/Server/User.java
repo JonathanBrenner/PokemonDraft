@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class User {
 	private String name;
 	private Socket socket;
-	private boolean ready = false;
 	private ArrayList<String> pokemonChoices = new ArrayList<String>();
 	
 	public User (String name, Socket socket) {
