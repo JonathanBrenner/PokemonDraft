@@ -20,13 +20,33 @@ public class MultithreadedTCPServer implements Runnable {
 	private String pokemonFile;
 	private int portNum;
 	private int numberOfUsers;
+	private int draftSize;
 	
-	public MultithreadedTCPServer(int portNum, int numberOfUsers, String pokemonFile) throws IOException {
+	public MultithreadedTCPServer(int portNum, int numberOfUsers, int draftSize, String pokemonFile) throws IOException {
 		socket = new ServerSocket(portNum);
 		threadPool = Executors.newFixedThreadPool(numberOfUsers);
 		this.portNum = portNum;
 		this.numberOfUsers = numberOfUsers;
 		this.pokemonFile = pokemonFile;
+		this.draftSize = draftSize;
+	}
+	
+	private void waitForUsers() {
+		int numberOfReadyUsers = 0;		
+		while (numberOfReadyUsers != numberOfUsers) {
+			numberOfReadyUsers = 0;
+			for (Boolean ready : usersAreReady) {
+				if (ready == true) {
+					numberOfReadyUsers ++;
+				}
+			}
+		}
+	}
+	
+	private void clearReadyStatus() {
+		for (int j = 0; j < numberOfUsers; j++) {
+			usersAreReady.set(j, false);
+		}
 	}
 	
 	public void run() {
@@ -43,47 +63,37 @@ public class MultithreadedTCPServer implements Runnable {
 		
 		for (int i = 0; i < numberOfUsers; i++) {
 			try {
-				Socket client = socket.accept();
+				Socket clientSocket = socket.accept();
 				ArrayList<String> pokemonChoices = new ArrayList<String>();
-				for (int j = 0; j < 6; j++) {
+				for (int j = 0; j < draftSize; j++) {
 					pokemonChoices.add(draft.getPokemon());
 				}
 				userOptions.add(pokemonChoices);
 				usersAreReady.add(false);
-				threadPool.execute(new ClientHandler(client, i));
+				threadPool.execute(new ClientHandler(clientSocket, i));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(1);
 			} 
 		}
+		waitForUsers();
 		
-		int numberOfReadyUsers = 0;		
-		while (numberOfReadyUsers != numberOfUsers) {
-			numberOfReadyUsers = 0;
-			for (Boolean ready : usersAreReady) {
-				if (ready == true) {
-					numberOfReadyUsers ++;
-				}
+		for (int i = 0; i < 6; i++) {
+			clearReadyStatus();
+			for (int j = 0; j < numberOfUsers; j++) {
+				users.get(j).setCanProceed(true);
 			}
-		}
-		
-		System.out.println("All players have made their draft picks");
-		
-		ArrayList<String> tempOptions = new ArrayList<String>();
-		tempOptions.addAll(userOptions.get(0));
-		for (int i = 0; i < numberOfUsers - 1; i++) {
-			userOptions.set(i, userOptions.get(i + 1));
-		}
-		userOptions.set(numberOfUsers - 1, tempOptions);
-		for (int i = 0; i < numberOfUsers; i++) {
-			OutputStream output;
-			try {
-				output = users.get(i).getSocket().getOutputStream();
-				output.write(userOptions.get(i).toString().getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
+			waitForUsers();
+			
+			System.out.println("All players have made their draft picks");
+			
+			ArrayList<String> tempOptions = new ArrayList<String>();
+			tempOptions.addAll(userOptions.get(0));
+			for (int j = 0; j < numberOfUsers - 1; j++) {
+				userOptions.set(j, userOptions.get(j + 1));
 			}
-		}
+			userOptions.set(numberOfUsers - 1, tempOptions);
+		}	
 	}
 	
 	class ClientHandler implements Runnable {
@@ -109,7 +119,32 @@ public class MultithreadedTCPServer implements Runnable {
 				User user = new User(username, client);
 				users.add(user);
 				System.out.println(username + " joined the server.");
+				usersAreReady.set(userId, true);
 				
+				for (int i = 0; i < 6; i++) {
+					while (!user.canProceed()) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					draft();
+					user.setCanProceed(false);
+				}
+				
+				output.write("Your team is: \n".getBytes());
+				for (String draftee : draftedPokemon) {
+					output.write((draftee + "\n").getBytes());
+				}
+				
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		}
+		
+		private void draft() {
+			try{
 				ArrayList<String> pokemonOptions = userOptions.get(userId);
 				for (String pokemonOption : pokemonOptions) {
 					output.write((pokemonOption + "\n").getBytes());
@@ -118,16 +153,15 @@ public class MultithreadedTCPServer implements Runnable {
 				boolean choiceMade = false;
 				String choice = "";
 				while (!choiceMade) {
-					output.write("Please choose one of the Pokemon.\n".getBytes());
+					output.write("Please choose one of the Pokemon: ".getBytes());
 					choice = input.nextLine();				
 					choiceMade = pokemonOptions.remove(choice);
 				}
 				draftedPokemon.add(choice);
 				userOptions.set(userId, pokemonOptions);
 				usersAreReady.set(userId, true);
-				
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException exception) {
+				exception.printStackTrace();
 			}
 		}
 	}

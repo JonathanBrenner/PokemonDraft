@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class User {
 	private String name;
 	private Socket socket;
+	private boolean canProceed = false;
+
 	private ArrayList<String> pokemonChoices = new ArrayList<String>();
 	
 	public User (String name, Socket socket) {
@@ -31,5 +33,13 @@ public class User {
 
 	public void setSocket(Socket socket) {
 		this.socket = socket;
+	}
+	
+	public boolean canProceed() {
+		return canProceed;
+	}
+
+	public void setCanProceed(boolean canProceed) {
+		this.canProceed = canProceed;
 	}
 }

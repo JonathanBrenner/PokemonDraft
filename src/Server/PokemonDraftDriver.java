@@ -9,7 +9,7 @@ public class PokemonDraftDriver {
 		
 		do {
 			try {
-				MultithreadedTCPServer server = new MultithreadedTCPServer(portNum, 3, "PokemonData.txt");
+				MultithreadedTCPServer server = new MultithreadedTCPServer(portNum, 2, 7, "PokemonData.txt");
 				serverStarted = true;
 				new Thread(server).start();
 			} catch (IOException e) {
