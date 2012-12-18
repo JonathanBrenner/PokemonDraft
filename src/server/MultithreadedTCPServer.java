@@ -1,4 +1,4 @@
-package Server;
+package server;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MultithreadedTCPServer implements Runnable {
+public class MultithreadedTCPServer<T> implements Runnable {
 
 	private ServerSocket socket;
 	private ExecutorService threadPool;
