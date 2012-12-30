@@ -5,31 +5,39 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class PokemonDraft {
+import pokemon.Pokemon;
+
+
+public class PokemonDraft
+{
 	private int numberOfPokemon = 0;
 	private String fileName;
-	private ArrayList<String> pokemonList = new ArrayList<String>();
+	private ArrayList<Pokemon> pokemonList = new ArrayList<Pokemon>();
 	private Random random = new Random();
 	
-	public PokemonDraft(String fileName) throws FileNotFoundException {
+	public PokemonDraft(String fileName) throws FileNotFoundException
+	{
 		this.fileName =  fileName;
 		readData();
 	}
 	
-	public void readData() throws FileNotFoundException {
+	public void readData() throws FileNotFoundException
+	{
 		File dataFile = new File(fileName);
 		Scanner fileReader = new Scanner(dataFile);
 		
-		while (fileReader.hasNext()) {
-			String pokemon = fileReader.nextLine();
+		while (fileReader.hasNext())
+		{
+			Pokemon pokemon = new Pokemon(fileReader.nextLine());
 			pokemonList.add(pokemon);
 			numberOfPokemon ++;
 		}
 	}
 	
-	public String getPokemon() {
+	public Pokemon getPokemon()
+	{
 		int randomIndex = random.nextInt(numberOfPokemon);
-		String pokemon = pokemonList.remove(randomIndex);
+		Pokemon pokemon = pokemonList.remove(randomIndex);
 		numberOfPokemon --;
 		return pokemon;
 	}

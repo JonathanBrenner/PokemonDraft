@@ -3,43 +3,52 @@ package server;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class User {
+public class User
+{
 	private String name;
 	private Socket socket;
 	private boolean canProceed = false;
 
 	private ArrayList<String> pokemonChoices = new ArrayList<String>();
 	
-	public User (String name, Socket socket) {
+	public User (String name, Socket socket)
+	{
 		this.name = name;
 		this.socket = socket;
 	}
 
-	public void addPokemon(String pokemon) {
+	public void addPokemon(String pokemon)
+	{
 		pokemonChoices.add(pokemon);
 	}
 	
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
-	public Socket getSocket() {
+	public Socket getSocket()
+	{
 		return socket;
 	}
 
-	public void setSocket(Socket socket) {
+	public void setSocket(Socket socket)
+	{
 		this.socket = socket;
 	}
 	
-	public boolean canProceed() {
+	public boolean canProceed()
+	{
 		return canProceed;
 	}
 
-	public void setCanProceed(boolean canProceed) {
+	public void setCanProceed(boolean canProceed)
+	{
 		this.canProceed = canProceed;
 	}
 }
