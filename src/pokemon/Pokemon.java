@@ -16,7 +16,12 @@ public class Pokemon extends Draftee
 		super(name);
 		this.tier = tier;
 	}
-
+	
+	public String toString()
+	{
+		return super.getName();
+	}
+	
 	public Tier getTier()
 	{
 		return tier;

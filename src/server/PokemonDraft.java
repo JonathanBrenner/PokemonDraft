@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import pokemon.Pokemon;
 
-
 public class PokemonDraft
 {
 	private int numberOfPokemon = 0;
@@ -28,6 +27,7 @@ public class PokemonDraft
 		
 		while (fileReader.hasNext())
 		{
+			String data = fileReader.nextLine();
 			Pokemon pokemon = new Pokemon(fileReader.nextLine());
 			pokemonList.add(pokemon);
 			numberOfPokemon ++;

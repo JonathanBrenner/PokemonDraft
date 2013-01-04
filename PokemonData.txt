@@ -1,163 +1,163 @@
-Bulbasaur
-Ivysaur
-Venusaur
-Charmander
-Charmeleon
-Charizard
-Squirtle
-Wartortle
-Blastoise
-Caterpie
-Metapod
-Butterfree
-Weedle
-Kakuna
-Beedrill
-Pidgey
-Pidgeotto
-Pidgeot
-Rattata
-Raticate
-Spearow
-Fearow
-Ekans
-Arbok
-Pikachu
-Raichu
-Sandshrew
-Sandslash
-Nidoran♀
-Nidorina
-Nidoqueen
-Nidoran♂
-Nidorino
-Nidoking
-Clefairy
-Clefable
-Vulpix
-Ninetales
-Jigglypuff
-Wigglytuff
-Zubat
-Golbat
-Oddish
-Gloom
-Vileplume
-Paras
-Parasect
-Venonat
-Venomoth
-Diglett
-Dugtrio
-Meowth
-Persian
-Psyduck
-Golduck
-Mankey
-Primeape
-Growlithe
-Arcanine
-Poliwag
-Poliwhirl
-Poliwrath
-Abra
-Kadabra
-Alakazam
-Machop
-Machoke
-Machamp
-Bellsprout
-Weepinbell
-Victreebel
-Tentacool
-Tentacruel
-Geodude
-Graveler
-Golem
-Ponyta
-Rapidash
-Slowpoke
-Slowbro
-Magnemite
-Magneton
-Farfetch'd
-Doduo
-Dodrio
-Seel
-Dewgong
-Grimer
-Muk
-Shellder
-Cloyster
-Gastly
-Haunter
-Gengar
-Onix
-Drowzee
-Hypno
-Krabby
-Kingler
-Voltorb
-Electrode
-Exeggcute
-Exeggutor
-Cubone
-Marowak
-Hitmonlee
-Hitmonchan
-Lickitung
-Koffing
-Weezing
-Rhyhorn
-Rhydon
-Chansey
-Tangela
-Kangaskhan
-Horsea
-Seadra
-Goldeen
-Seaking
-Staryu
-Starmie
-Mr. Mime
-Scyther
-Jynx
-Electabuzz
-Magmar
-Pinsir
-Tauros
-Magikarp
-Gyarados
-Lapras
-Ditto
-Eevee
-Vaporeon
-Jolteon
-Flareon
-Porygon
-Omanyte
-Omastar
-Kabuto
-Kabutops
-Aerodactyl
-Snorlax
-Articuno
-Zapdos
-Moltres
-Dratini
-Dragonair
-Dragonite
-Mewtwo
-Mew
-Chikorita
-Bayleef
-Meganium
-Cyndaquil
-Quilava
-Typhlosion
-Totodile
-Croconaw
-Feraligatr
+Bulbasaur LC
+Ivysaur	NFE
+Venusaur OU
+Charmander LC
+Charmeleon NFE
+Charizard NU
+Squirtle LC
+Wartortle NU
+Blastoise UU
+Caterpie LC
+Metapod NFE
+Butterfree NU
+Weedle LC
+Kakuna NFE
+Beedrill NU
+Pidgey LC
+Pidgeotto NFE
+Pidgeot NU
+Rattata LC
+Raticate NU
+Spearow LC
+Fearow NU
+Ekans LC
+Arbok NU
+Pikachu NU
+Raichu NU
+Sandshrew LC
+Sandslash RU
+NidoranF LC
+Nidorina NFE
+Nidoqueen RU
+NidoranM LC
+Nidorino NFE
+Nidoking UU
+Clefairy LC
+Clefable RU
+Vulpix NFE
+Ninetales OU
+Jigglypuff LC
+Wigglytuff NU
+Zubat NU
+Golbat NFE
+Oddish LC
+Gloom NFE
+Vileplume NU
+Paras LC
+Parasect NU
+Venonat LC
+Venomoth BL2
+Diglett LC
+Dugtrio OU
+Meowth LC
+Persian NU
+Psyduck LC
+Golduck NU
+Mankey LC
+Primeape NU
+Growlithe LC
+Arcanine UU
+Poliwag LC
+Poliwhirl NFE
+Poliwrath RU
+Abra LC
+Kadabra NU
+Alakazam OU
+Machop LC
+Machoke NU
+Machamp UU
+Bellsprout LC
+Weepinbell NFE
+Victreebel NU
+Tentacool LC
+Tentacruel OU
+Geodude LC
+Graveler NFE
+Golem NU
+Ponyta LC
+Rapidash NU
+Slowpoke LC
+Slowbro UU
+Magnemite LC
+Magneton RU
+Farfetch'd NU
+Doduo LC
+Dodrio NU
+Seel LC
+Dewgong NU
+Grimer LC
+Muk NU
+Shellder LC
+Cloyster OU
+Gastly LC
+Haunter NU
+Gengar OU
+Onix LC
+Drowzee LC
+Hypno NU
+Krabby LC
+Kingler NU
+Voltorb LC
+Electrode NU
+Exeggcute LC
+Exeggutor NU
+Cubone LC
+Marowak NU
+Hitmonlee RU
+Hitmonchan RU
+Lickitung LC
+Koffing LC
+Weezing NU
+Rhyhorn LC
+Rhydon RU
+Chansey OU
+Tangela LC
+Kangaskhan NU
+Horsea LC
+Seadra NFE
+Goldeen LC
+Seaking NU
+Staryu LC
+Starmie OU
+Mr. Mime NU
+Scyther RU
+Jynx RU
+Electabuzz NU
+Magmar NU
+Pinsir NU
+Tauros NU
+Magikarp LC
+Gyarados OU
+Lapras NU
+Ditto NU
+Eevee LC
+Vaporeon OU
+Jolteon OU
+Flareon NU
+Porygon LC
+Omanyte LC
+Omastar RU
+Kabuto LC
+Kabutops RU
+Aerodactyl RU
+Snorlax UU
+Articuno NU
+Zapdos UU
+Moltres RU
+Dratini LC
+Dragonair NU
+Dragonite OU
+Mewtwo Uber
+Mew UU
+Chikorita LC
+Bayleef NFE
+Meganium NU
+Cyndaquil LC
+Quilava NFE
+Typhlosion RU
+Totodile LC
+Croconaw NFE
+Feraligatr RU
 Sentret
 Furret
 Hoothoot

@@ -184,18 +184,19 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 				ArrayList<T> options = userOptions.get(userId);
 				for (T option : options)
 				{
-					output.write((option + "\n").getBytes());
+					output.write((option.toString() + "\n").getBytes());
 				}
 				
 				boolean choiceMade = false;
-				String choice = null;
+				T choice = null;
 				while (!choiceMade) 
 				{
 					output.write("Please choose one of the Pokemon: ".getBytes());
-					choice = input.nextLine();
+					choice = (T) new Draftee(input.nextLine());
 					choiceMade = options.remove(choice);
 				}
-				draftees.add((T) new Draftee(choice));
+
+				draftees.add(choice);
 				userOptions.set(userId, options);
 				usersAreReady.set(userId, true);
 			}
