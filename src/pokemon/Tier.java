@@ -7,6 +7,7 @@ public enum Tier {
 	UU,
 	BL2,
 	RU,
+	BL3,
 	NU,
 	LC,
 	NFE

@@ -27,7 +27,7 @@ public class PokemonDraft
 		
 		while (fileReader.hasNext())
 		{
-			String data = fileReader.nextLine();
+			//String data = fileReader.nextLine();
 			Pokemon pokemon = new Pokemon(fileReader.nextLine());
 			pokemonList.add(pokemon);
 			numberOfPokemon ++;
