@@ -1,5 +1,5 @@
 Bulbasaur LC
-Ivysaur	NFE
+Ivysaur NFE
 Venusaur OU
 Charmander LC
 Charmeleon NFE

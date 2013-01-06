@@ -9,23 +9,27 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import draft.Draftee;
+import pokemon.Pokemon;
+import pokemon.PokemonDraft;
+import pokemon.Tier;
 
-public class MultithreadedTCPServer<T extends Draftee> implements Runnable
+public class MultithreadedTCPServer implements Runnable
 {
 
 	private ServerSocket socket;
 	private ExecutorService threadPool;
 	private ArrayList<User> users = new ArrayList<User>();
-	private ArrayList<ArrayList<T>> userOptions = new ArrayList<ArrayList<T>>();
+	private ArrayList<ArrayList<Pokemon>> userOptions = new ArrayList<ArrayList<Pokemon>>();
 	private ArrayList<Boolean> usersAreReady = new ArrayList<Boolean>();
+	private ArrayList<Tier> requestedTiers;
 	private PokemonDraft draft;
 	private String dataFile;
 	private int portNum;
 	private int numberOfUsers;
 	private int draftSize;
 	
-	public MultithreadedTCPServer(int portNum, int numberOfUsers, int draftSize, String dataFile) throws IOException
+	public MultithreadedTCPServer(int portNum, int numberOfUsers, int draftSize, 
+			String dataFile, ArrayList<Tier> requestedTiers) throws IOException
 	{
 		socket = new ServerSocket(portNum);
 		threadPool = Executors.newFixedThreadPool(numberOfUsers);
@@ -33,6 +37,7 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 		this.numberOfUsers = numberOfUsers;
 		this.dataFile = dataFile;
 		this.draftSize = draftSize;
+		this.requestedTiers = requestedTiers;
 	}
 	
 	private void waitForUsers()
@@ -67,6 +72,10 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 		try
 		{
 			draft = new PokemonDraft(dataFile);
+			if (requestedTiers.size() > 0)
+			{
+				draft.setTiers(requestedTiers);
+			}
 		}
 		catch (FileNotFoundException exception)
 		{
@@ -80,10 +89,10 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 			try
 			{
 				Socket clientSocket = socket.accept();
-				ArrayList<T> pokemonChoices = new ArrayList<T>();
+				ArrayList<Pokemon> pokemonChoices = new ArrayList<Pokemon>();
 				for (int j = 0; j < draftSize; j++)
 				{
-					pokemonChoices.add((T) draft.getPokemon());
+					pokemonChoices.add(draft.getPokemon());
 				}
 				userOptions.add(pokemonChoices);
 				usersAreReady.add(false);
@@ -108,7 +117,7 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 			
 			System.out.println("All players have made their draft picks");
 			
-			ArrayList<T> tempOptions = new ArrayList<T>();
+			ArrayList<Pokemon> tempOptions = new ArrayList<Pokemon>();
 			tempOptions.addAll(userOptions.get(0));
 			for (int j = 0; j < numberOfUsers - 1; j++)
 			{
@@ -125,7 +134,7 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 		private int userId;
 		private Scanner input;
 		private OutputStream output;
-		private ArrayList<T> draftees = new ArrayList<T>();
+		private ArrayList<Pokemon> draftedPokemon = new ArrayList<Pokemon>();
 		
 		public ClientHandler(Socket client, int userId)
 		{
@@ -165,7 +174,7 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 				}
 				
 				output.write("Your team is: \n".getBytes());
-				for (Draftee draftee : draftees)
+				for (Pokemon draftee : draftedPokemon)
 				{
 					output.write((draftee + "\n").getBytes());
 				}
@@ -181,22 +190,22 @@ public class MultithreadedTCPServer<T extends Draftee> implements Runnable
 		{
 			try
 			{
-				ArrayList<T> options = userOptions.get(userId);
-				for (T option : options)
+				ArrayList<Pokemon> options = userOptions.get(userId);
+				for (Pokemon option : options)
 				{
 					output.write((option.toString() + "\n").getBytes());
 				}
 				
 				boolean choiceMade = false;
-				T choice = null;
+				Pokemon choice = null;
 				while (!choiceMade) 
 				{
 					output.write("Please choose one of the Pokemon: ".getBytes());
-					choice = (T) new Draftee(input.nextLine());
+					choice = new Pokemon(input.nextLine());
 					choiceMade = options.remove(choice);
 				}
 
-				draftees.add(choice);
+				draftedPokemon.add(choice);
 				userOptions.set(userId, options);
 				usersAreReady.set(userId, true);
 			}

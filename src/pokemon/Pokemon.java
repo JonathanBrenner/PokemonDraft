@@ -1,34 +1,63 @@
 package pokemon;
 
-import draft.Draftee;
+import java.util.ArrayList;
 
-public class Pokemon extends Draftee
+public class Pokemon
 {
-	Tier tier;
+	private String name;
+	private ArrayList<Tier> tiers = new ArrayList<Tier>();
 	
 	public Pokemon(String name)
 	{
-		super(name);
+		this.name = name;
 	}
 	
-	public Pokemon(String name, Tier tier)
+	public Pokemon(String name, ArrayList<Tier> tiers)
 	{
-		super(name);
-		this.tier = tier;
-	}
-	
-	public String toString()
-	{
-		return super.getName();
-	}
-	
-	public Tier getTier()
-	{
-		return tier;
+		this.name = name;
+		this.tiers.addAll(tiers);
 	}
 
-	public void setTier(Tier tier)
+	@Override
+	public boolean equals(Object obj)
 	{
-		this.tier = tier;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pokemon other = (Pokemon) obj;
+		if (name == null)
+		{
+			if (other.name != null)
+				return false;
+		}
+		else if (!name.equalsIgnoreCase(other.name))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public ArrayList<Tier> getTiers()
+	{
+		return tiers;
 	}
 }
