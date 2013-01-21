@@ -38,7 +38,7 @@ Vulpix NFE
 Ninetales OU
 Jigglypuff LC
 Wigglytuff NU
-Zubat NU
+Zubat LC
 Golbat NFE
 Oddish LC
 Gloom NFE
@@ -651,7 +651,7 @@ Cobalion UU
 Terrakion OU
 Virizion UU
 Tornadus UU
-Tornadus-T OU
+Tornadus-T Uber
 Thundurus Uber
 Thundurus-T OU
 Reshiram Uber
